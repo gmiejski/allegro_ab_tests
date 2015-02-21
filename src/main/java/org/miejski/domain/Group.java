@@ -1,5 +1,7 @@
 package org.miejski.domain;
 
+import java.util.Objects;
+
 public class Group {
 
     private String name;
@@ -23,17 +25,11 @@ public class Group {
 
         Group group = (Group) o;
 
-        return !(name != null ? !name.equals(group.name) : group.name != null);
-
+        return Objects.equals(this.name(), group.name());
     }
 
     @Override
     public int hashCode() {
-        return name != null ? name.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "Group(" + name + ")";
+        return Objects.hash(name());
     }
 }

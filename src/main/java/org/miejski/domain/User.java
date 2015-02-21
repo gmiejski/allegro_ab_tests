@@ -1,5 +1,7 @@
 package org.miejski.domain;
 
+import java.util.Objects;
+
 public class User {
 
     private String id;
@@ -23,11 +25,11 @@ public class User {
 
         User user = (User) o;
 
-        return !(id != null ? !id.equals(user.id) : user.id != null);
+        return Objects.equals(this.id(), user.id());
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return Objects.hash(this.id());
     }
 }
