@@ -1,5 +1,7 @@
 package org.miejski.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class Group {
@@ -14,6 +16,7 @@ public class Group {
         this.name = groupName;
     }
 
+    @JsonProperty
     public String name() {
         return name;
     }
