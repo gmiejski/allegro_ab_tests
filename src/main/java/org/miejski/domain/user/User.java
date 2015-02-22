@@ -1,10 +1,10 @@
-package org.miejski.domain;
+package org.miejski.domain.user;
 
 import java.util.Objects;
 
 public class User {
 
-    private String id;
+    private final String id;
 
     public static User of(String userId) {
         return new User(userId);

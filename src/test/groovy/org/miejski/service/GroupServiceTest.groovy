@@ -1,17 +1,18 @@
 package org.miejski.service
 
+import org.miejski.service.allocator.AccurateGroupAllocator
 import spock.lang.Specification
 
 class GroupServiceTest extends Specification {
 
     def GroupService instance
-    def GroupAllocator groupAllocator
+    def AccurateGroupAllocator groupAllocator
 
     def static USER_ID = "userName"
 
     void setup() {
-        groupAllocator = Mock(GroupAllocator)
-        instance = new GroupService(groupAllocator: groupAllocator)
+        groupAllocator = Mock(AccurateGroupAllocator)
+        instance = new GroupService(standardGroupAllocator: groupAllocator)
     }
 
     def "should call groupAllocator when looking up group for unassigned user"() {

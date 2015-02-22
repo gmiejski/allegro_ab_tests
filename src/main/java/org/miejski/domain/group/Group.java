@@ -1,4 +1,4 @@
-package org.miejski.domain;
+package org.miejski.domain.group;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class Group {
 
-    private String name;
+    private final String name;
 
     public static Group of(String name) {
         return new Group(name);

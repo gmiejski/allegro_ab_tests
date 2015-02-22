@@ -1,6 +1,6 @@
 package org.miejski.controller
 
-import org.miejski.domain.Group
+import org.miejski.domain.group.Group
 import org.miejski.service.GroupService
 import spock.lang.Specification
 
