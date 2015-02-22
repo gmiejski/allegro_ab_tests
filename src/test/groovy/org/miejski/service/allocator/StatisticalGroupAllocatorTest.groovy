@@ -1,6 +1,7 @@
 package org.miejski.service.allocator
 
 import org.miejski.domain.group.GroupDefinition
+import org.miejski.service.group.GroupDefinitionsProvider
 import spock.lang.Specification
 
 class StatisticalGroupAllocatorTest extends Specification {
@@ -9,11 +10,13 @@ class StatisticalGroupAllocatorTest extends Specification {
 
     def static weights = [2, 3, 5]
     def static List<GroupDefinition> groups = weights.collect { GroupDefinition.of("group" + it, it) }.toList()
+    def GroupDefinitionsProvider groupDefinitionsProvider
 
     void setup() {
-        instance = new StatisticalGroupAllocator(groups)
+        groupDefinitionsProvider = Mock(GroupDefinitionsProvider)
+        groupDefinitionsProvider.getGroups() >> groups
+        instance = new StatisticalGroupAllocator(groupDefinitionsProvider)
     }
-
 
     def "should assign groups to users with sufficient ratio"() {
         given:

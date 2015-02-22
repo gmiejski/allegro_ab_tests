@@ -1,5 +1,7 @@
 package org.miejski.domain.group;
 
+import java.util.Objects;
+
 public class GroupDefinition {
 
     private final Group group;
@@ -20,5 +22,20 @@ public class GroupDefinition {
 
     public GroupWeight getWeight() {
         return weight;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GroupDefinition that = (GroupDefinition) o;
+        return Objects.equals(this.getGroup(), that.getGroup())
+                && Objects.equals(this.getWeight(), that.getWeight());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getGroup(), this.getWeight());
     }
 }

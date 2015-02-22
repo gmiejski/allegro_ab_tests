@@ -1,6 +1,7 @@
 package org.miejski.service.allocator
 
 import org.miejski.domain.group.GroupDefinition
+import org.miejski.service.group.GroupDefinitionsProvider
 import spock.lang.Specification
 
 class AccurateGroupAllocatorTest extends Specification {
@@ -9,9 +10,12 @@ class AccurateGroupAllocatorTest extends Specification {
 
     def static weights = [2, 3, 5]
     def static List<GroupDefinition> groups = weights.collect { GroupDefinition.of("group" + it, it) }.toList()
+    def GroupDefinitionsProvider groupDefinitionsProvider
 
     void setup() {
-        instance = new AccurateGroupAllocator(groups)
+        groupDefinitionsProvider = Mock(GroupDefinitionsProvider)
+        groupDefinitionsProvider.getGroups() >> groups
+        instance = new AccurateGroupAllocator(groupDefinitionsProvider)
     }
 
     def "should assign to groups exactly as the groups definition states"() {
@@ -38,6 +42,4 @@ class AccurateGroupAllocatorTest extends Specification {
             map.get(it.group.name()) == (allRequestsCount / totalWeights * it.weight.value)
         }
     }
-
-
 }
