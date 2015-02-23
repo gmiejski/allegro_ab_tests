@@ -15,6 +15,8 @@ For main technologies I used:
 * some Guava
 * jmeter for performance tests
 
+Whole code written in IntelliJ.
+
 ##Group allocation strategy:
 -------
 
@@ -37,6 +39,10 @@ Also it is more durable than RDB.
 I of course didn't save 1_000_000 records in it, but found a note how much memory will fully saved store take:
 
 [http://redis.io/topics/faq](http://redis.io/topics/faq)
+
+Redis config file can be found here: \src\main\resources\persistence\redis.windows.conf
+
+To run redis: redis-server.exe redis.windows.conf
 
 ##Performance tests
 -------
@@ -66,6 +72,8 @@ Here are the performance results of reading 15000 groups:
 | 15000  | 1  | 2  | 2  | 0  | 115 | 0.00% | 1000/s | 183 |
 
 It can be easily configured to check performance of other cases also.
+
+Jmeter test file can be found here (and easily opened in jmeter to run): \src\test\jmeter\ABTest.jmx
 
 ##Things to improve
 -------
