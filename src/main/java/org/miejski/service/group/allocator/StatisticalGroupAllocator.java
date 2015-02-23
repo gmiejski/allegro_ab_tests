@@ -1,4 +1,4 @@
-package org.miejski.service.allocator;
+package org.miejski.service.group.allocator;
 
 import org.miejski.domain.group.GroupDefinition;
 import org.miejski.service.group.GroupDefinitionsProvider;
@@ -20,6 +20,7 @@ public class StatisticalGroupAllocator implements GroupAllocator {
     @Autowired
     public StatisticalGroupAllocator(GroupDefinitionsProvider groupDefinitionsProvider) {
         this.groupDefinitions = groupDefinitionsProvider.getGroups();
+        AllocatorStatePreconditions.checkGroupsDefinitionState(groupDefinitions);
         this.groups = groupDefinitions.stream()
                 .flatMap(groupDefinition -> range(0, groupDefinition.getWeight().getValue())
                         .boxed().map(index -> groupDefinition.getGroup().name()))

@@ -1,4 +1,4 @@
-package org.miejski.service.allocator;
+package org.miejski.service.group.allocator;
 
 import org.miejski.domain.group.GroupCounter;
 import org.miejski.domain.group.GroupDefinition;
@@ -19,26 +19,26 @@ public class AccurateGroupAllocator implements GroupAllocator {
     @Autowired
     public AccurateGroupAllocator(GroupDefinitionsProvider groupDefinitionsProvider) {
         List<GroupDefinition> groupDefinitions = groupDefinitionsProvider.getGroups();
+        AllocatorStatePreconditions.checkGroupsDefinitionState(groupDefinitions);
         this.groupCounters = groupDefinitions.stream().map(GroupCounter::new).collect(toList());
     }
 
     @Override
     public synchronized String assignGroup() {
-        Optional<GroupCounter> assignableGroup = getFirstAssignableGroup();
+        GroupCounter groupCounter = getFirstAssignableGroup().orElseGet(() -> {
+            resetGroupsConfiguration();
+            return getFirstAssignableGroup().get();
+        });
 
-        if (!assignableGroup.isPresent()) {
-            resetGroupsAssigneesLeft();
-            assignableGroup = getFirstAssignableGroup();
-        }
-        assignableGroup.get().decrease();
-        return assignableGroup.get().getGroup().name();
+        groupCounter.decrease();
+        return groupCounter.getGroup().name();
     }
 
     private Optional<GroupCounter> getFirstAssignableGroup() {
         return groupCounters.stream().filter(GroupCounter::canAssignMore).findFirst();
     }
 
-    private void resetGroupsAssigneesLeft() {
+    private void resetGroupsConfiguration() {
         groupCounters.forEach(GroupCounter::reset);
     }
 }

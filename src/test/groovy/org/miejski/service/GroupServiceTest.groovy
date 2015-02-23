@@ -2,7 +2,7 @@ package org.miejski.service
 
 import org.miejski.domain.group.Group
 import org.miejski.persistence.GroupRepository
-import org.miejski.service.allocator.AccurateGroupAllocator
+import org.miejski.service.group.allocator.AccurateGroupAllocator
 import spock.lang.Specification
 
 class GroupServiceTest extends Specification {

@@ -1,4 +1,4 @@
-package org.miejski.service.allocator
+package org.miejski.service.group.allocator
 
 import org.miejski.domain.group.GroupDefinition
 import org.miejski.service.group.GroupDefinitionsProvider
@@ -16,6 +16,37 @@ class AccurateGroupAllocatorTest extends Specification {
         groupDefinitionsProvider = Mock(GroupDefinitionsProvider)
         groupDefinitionsProvider.getGroups() >> groups
         instance = new AccurateGroupAllocator(groupDefinitionsProvider)
+    }
+
+    def "should throw exception when didn't receive proper groups configurations"() {
+        given:
+        GroupDefinitionsProvider unproperProvider = Mock(GroupDefinitionsProvider)
+        unproperProvider.getGroups() >> returned
+
+        when:
+        new AccurateGroupAllocator(unproperProvider)
+
+        then:
+        thrown(IllegalStateException)
+
+        where:
+        returned                     | _
+        null                         | _
+        []                           | _
+        [GroupDefinition.of("1", 0)] | _
+    }
+
+    def "should work properly with at least one proper group definition received"() {
+        given:
+        groupDefinitionsProvider.getGroups() >> [GroupDefinition.of("1", 0),
+                                                 GroupDefinition.of("2", 1),
+                                                 GroupDefinition.of("3", 0)]
+
+        when:
+        new AccurateGroupAllocator(groupDefinitionsProvider)
+
+        then:
+        noExceptionThrown()
     }
 
     def "should assign to groups exactly as the groups definition states"() {

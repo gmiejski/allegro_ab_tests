@@ -2,7 +2,7 @@ package org.miejski.service;
 
 import org.miejski.domain.group.Group;
 import org.miejski.persistence.GroupRepository;
-import org.miejski.service.allocator.GroupAllocator;
+import org.miejski.service.group.allocator.GroupAllocator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +20,11 @@ public class GroupService {
     public Group getAssignedGroup(String userId) {
         Optional<Group> assignedGroup = groupRepository.getGroup(userId);
 
-        if (assignedGroup.isPresent()) {
-            return assignedGroup.get();
-        } else {
+        return assignedGroup.orElseGet(() -> {
             Group group = Group.of(standardGroupAllocator.assignGroup());
             groupRepository.assignGroup(userId, group.name());
             return group;
-        }
+        });
     }
 
     @Autowired

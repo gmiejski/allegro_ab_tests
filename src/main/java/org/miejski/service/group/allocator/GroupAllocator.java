@@ -1,4 +1,4 @@
-package org.miejski.service.allocator;
+package org.miejski.service.group.allocator;
 
 public interface GroupAllocator {
     String assignGroup();
