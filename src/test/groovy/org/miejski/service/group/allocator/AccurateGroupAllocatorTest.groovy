@@ -51,7 +51,7 @@ class AccurateGroupAllocatorTest extends Specification {
 
     def "should assign to groups exactly as the groups definition states"() {
         given:
-        def map = [:]
+        def groupsAssignsCount = [:]
         def start = System.currentTimeMillis()
         def totalWeights = groups.collect { it.weight.value }.sum()
         def allRequestsCount = 1_000_000
@@ -59,10 +59,10 @@ class AccurateGroupAllocatorTest extends Specification {
         when:
         (1..allRequestsCount).each {
             def groupName = instance.assignGroup()
-            if (!map.containsKey(groupName)) {
-                map.put(groupName, 1)
+            if (!groupsAssignsCount.containsKey(groupName)) {
+                groupsAssignsCount.put(groupName, 1)
             } else {
-                map.put(groupName, map.get(groupName) + 1)
+                groupsAssignsCount.put(groupName, groupsAssignsCount.get(groupName) + 1)
             }
         }
         def end = System.currentTimeMillis()
@@ -70,7 +70,7 @@ class AccurateGroupAllocatorTest extends Specification {
         then:
         println('Total time: ' + (end - start))
         groups.every {
-            map.get(it.group.name()) == (allRequestsCount / totalWeights * it.weight.value)
+            groupsAssignsCount.get(it.group.name()) == (allRequestsCount / totalWeights * it.weight.value)
         }
     }
 }
